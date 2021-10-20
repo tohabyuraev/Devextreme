@@ -3,7 +3,7 @@
 1. Команду на создание обьектного файла
 
 ```
-gcc -c -Wall -Werror -fpic -O3 NAME.c NAME.o
+gcc -Wall -Werror -fPIC -O3 -o NAME.o -c NAME.c
 ```
 где NAME - название исходного файла;
 
