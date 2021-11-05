@@ -7,13 +7,16 @@ import re
 
 
 #  Шаблон на x, y со знаком '+' и '-'
-pattern = re.compile(r'\{\d\.\d+f,\d\.\d+f')
-pattern_ = re.compile(r'\{-\d\.\d+f,\d\.\d+f')
+pattern_x = re.compile(r'\{(-?\d\.\d+)')
+pattern_y = re.compile(r'(-?\d\.\d+)f\}')
 
-text = ''
+text = '{{-0.00000f, 0.00000f}, {0.00940f, 0.01601f}, {1.00000f, 0.00000f}};'
 
-results = re.findall(pattern, text)
-results_ = re.findall(pattern_, text)
+result_x = pattern_x.findall(text)
+result_y = pattern_y.findall(text)
 
 with open('collect.txt', 'w') as fout:
-    fout.write('\n'.join(results_ + results))
+    fout.write('x =\n')
+    fout.write(',\n'.join(result_x))
+    fout.write('\ny =\n')
+    fout.write(',\n'.join(result_y))
