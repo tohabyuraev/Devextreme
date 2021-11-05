@@ -2,11 +2,17 @@
 __pycache__
 
 # Игнор файлы build C (C++)
+build/
 *.o
 *.so
+*.dll
 
 # Игнор папки данных графиков
-graph*
+data/
 
 # Игнор файлы обработки
 *.txt
+*.zip
+
+# Исключения
+!CMakeLists.txt
