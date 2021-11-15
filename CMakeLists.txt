@@ -20,6 +20,7 @@ include_directories(${CORE}/ ${SOURCE}/)
 # Установка переменной со списком исходников
 set(SOURCE_LIB
     ${CORE}/interp.cpp
+    ${SOURCE}/graph_3_2.cpp
     ${SOURCE}/graph_5_11.cpp)
 
 # Создание библиотеки с именем lebedev
