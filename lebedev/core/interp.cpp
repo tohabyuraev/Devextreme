@@ -1,14 +1,28 @@
 #include "interp.hpp"
 
 
-float testInterp1d() {
+int testInterp1d() {
     float x1[] = {1.0, 2.0, 3.0};
     float y1[] = {10, 50, 70};
 
+    map_t source = {
+        {1.0, 10},
+        {2.0, 50},
+        {3.0, 70},
+    };
+
     float value; std::cin >> value;
-    return interp(value, x1, y1);
+
+    std::cout
+        << "With vectors = "
+        << interp(value, x1, y1) << std::endl;
+    std::cout
+        << "With map = "
+        << interp1d(value, source) << std::endl;
+    return EXIT_SUCCESS;
 }
-float testInterp2d() {
+
+int testInterp2d() {
     vector_t x = {1.0, 2.0, 3.0};
     vector_t y = {15, 30, 70};
     matrix_t z = {
@@ -19,7 +33,11 @@ float testInterp2d() {
 
     float value_x; std::cin >> value_x;
     float value_y; std::cin >> value_y;
-    return interp2d(value_x, value_y, x, y, z);
+
+    std::cout
+        << "interp2d = "
+        << interp2d(value_x, value_y, x, y, z) << std::endl;
+    return EXIT_SUCCESS;
 }
 
 float interp(
@@ -35,11 +53,11 @@ float interp(
 }
 
 float interp1d(
-    const float& x,
+    const float x,
     const vector_t& data_x,
     const vector_t& data_y)
 {
-    iterpair bound = std::equal_range(
+    auto bound = std::equal_range(
         data_x.begin(), data_x.end(), x);
 
     if (data_x.begin() == bound.first) {
@@ -49,10 +67,33 @@ float interp1d(
     } else {
         const int i = bound.first - data_x.begin() - 1;
         const int j = bound.first - data_x.begin() - 0;
-        
+
         return data_y[j] + (x - data_x[j]) *
             (data_y[i] - data_y[j]) /
             (data_x[i] - data_x[j]);
+    };
+}
+
+float interp1d(
+    const float x,
+    const map_t& data_xy)
+{
+    auto bound = data_xy.equal_range(x);
+
+    if (data_xy.begin() == bound.first) {
+        return data_xy.begin()->second;
+    } else if (data_xy.end() == bound.second) {
+        return data_xy.rbegin()->second;
+    } else {
+        const float x_1 = std::prev(bound.first)->first;
+        const float y_1 = std::prev(bound.first)->second;
+
+        const float x_2 = bound.first->first;
+        const float y_2 = bound.first->second;
+
+        return y_2 + (x - x_2) *
+            (y_1 - y_2) /
+            (x_1 - x_2);
     };
 }
 
@@ -63,13 +104,13 @@ float interp2d(
     const vector_t& data_y,
     const matrix_t& data_z)
 {
-    iterpair bound_x = std::equal_range(
+    auto bound_x = std::equal_range(
         data_x.begin(), data_x.end(), x);
-    iterpair bound_y = std::equal_range(
+    auto bound_y = std::equal_range(
         data_y.begin(), data_y.end(), y);
 
-    pospair_t pos_x = findPosition_(data_x, bound_x);
-    pospair_t pos_y = findPosition_(data_y, bound_y);
+    pos_t pos_x = findPosition_(data_x, bound_x);
+    pos_t pos_y = findPosition_(data_y, bound_y);
 
     // Расположение точек
     //              x_1            x_2
@@ -92,11 +133,11 @@ float interp2d(
             (data_y[pos_y.second] - data_y[pos_y.first]);
 }
 
-pospair_t findPosition_(
+pos_t findPosition_(
     const vector_t& data,
-    const iterpair& bound)
+    const vector_i& bound)
 {
-    pospair_t pos;
+    pos_t pos;
 
     if (data.begin() == bound.first) {
         pos = {
