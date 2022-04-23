@@ -1,5 +1,5 @@
 #include "../core/interp.hpp"
-#include "graph_5_11.hpp"
+#include "graph.hpp"
 
 
 float graph_5_11(
