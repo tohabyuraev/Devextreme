@@ -3,11 +3,13 @@ __pycache__
 
 # Игнор файлы build C (C++)
 build/
+check/
 *.o
 *.so
 *.dll
 
 # Игнор файлы графиков
+charts/
 images/
 
 # Игнор файлы обработки
