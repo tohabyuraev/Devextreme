@@ -22,9 +22,12 @@ for i, file in enumerate(csv_files):
     with open(file, 'r') as csv_file:
         data = list(csv.reader(csv_file))
 
-    pattern = f'unsigned int Length_1_{i} = {len(data)}; float Matrix_1_{i}[][2] = {{'
+    pattern = f'unsigned int Length_1_{i + 1} = {len(data)}; float Matrix_1_{i + 1}[][2] = {{'
     for x, y, _ in data:
-        pattern += '{{{:.5f}f, {:.5f}f}}, '.format(float(x), float(y))
+        pattern += '{{{:.5f}f, {:.5f}f}}, '.format(
+            float(x),
+            float(y),
+        )
 
     with open('convert.txt', 'a') as fout:
         fout.write(pattern[:-2] + '};' + '\n')
